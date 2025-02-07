@@ -23,14 +23,12 @@ public class NonWorkingDaysService {
 
     @Cacheable("non-working-days")
     public YearResponse getCommonResponseForYear(int year) {
-        System.out.println("Работа сервиса");
         String url = "https://xmlcalendar.ru/data/ru/" + year + "/calendar.json";
         return restTemplate.getForObject(url, YearResponse.class);
     }
 
     //1-st task
     public DaysResponse getCountOfNonWorkingDaysPerPeriod(String strDateFrom, String strDateTo) {
-
         Byte countOfDaysBetweenDates = 0;
         ZonedDateTime dateFrom = getZonedDateTimeFromStringDate(strDateFrom);
         ZonedDateTime dateTo = getZonedDateTimeFromStringDate(strDateTo);

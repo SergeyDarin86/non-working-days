@@ -27,11 +27,10 @@ public class Controller {
         return ResponseEntity.ok(service.getCommonResponseForYear(year));
     }
 
-    @PostMapping("/count")
+    @PostMapping("/countOfDays")
     public ResponseEntity getCountOfNonWorkingDaysBetweenDays(@RequestBody @Valid DateSearchDTO dateSearchDTO, BindingResult bindingResult) {
         dateDTOValidator.validate(dateSearchDTO, bindingResult);
         ExceptionBuilder.buildErrorMessageForClient(bindingResult);
-
         return ResponseEntity.ok(service.getCountOfNonWorkingDaysPerPeriod(dateSearchDTO.getDateFrom(), dateSearchDTO.getDateTo()));
     }
 
