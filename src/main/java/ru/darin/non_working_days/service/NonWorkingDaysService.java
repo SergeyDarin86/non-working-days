@@ -65,7 +65,22 @@ public class NonWorkingDaysService {
     }
 
     //2-d task
-    public LocalDate getDateAfterCountOfWorkingDays() {
-        return LocalDate.now();
+    // узнать какое будет число по истечении указанного числа рабочих дней (сегодняшний день не учитывать)
+    public ZonedDateTime getDateAfterCountOfWorkingDays(Integer countOfWorkDays) {
+        ZonedDateTime dateFrom = ZonedDateTime.now();
+        ZonedDateTime dateAfterCount = dateFrom;
+        dateAfterCount = dateAfterCount.plusDays(countOfWorkDays + 1);
+
+        YearResponse response = getCommonResponseForYear(ZonedDateTime.now().getYear());
+        int monthIndex = dateFrom.getMonthValue() - 1;
+
+        String[] splittedDays = response.getMonths().get(monthIndex).getDays().split(",");
+        for (String str : splittedDays) {
+            String strDay = str.replaceAll("[*]|[+]", "");
+            ZonedDateTime currentDate = getZonedDateTimeFromStringForSingleDayOfCalendar(strDay, response.getMonths().get(monthIndex).getMonth(), response.getYear());
+            boolean isBetweenDates = dateFrom.isBefore(currentDate) && dateAfterCount.isAfter(currentDate);
+            if (isBetweenDates && !str.contains("*")) dateAfterCount = dateAfterCount.plusDays(1);
+        }
+        return dateAfterCount;
     }
 }

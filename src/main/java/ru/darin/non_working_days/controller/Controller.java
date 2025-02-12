@@ -34,6 +34,11 @@ public class Controller {
         return ResponseEntity.ok(service.getCountOfNonWorkingDaysPerPeriod(dateSearchDTO.getDateFrom(), dateSearchDTO.getDateTo()));
     }
 
+    @GetMapping("/dateAfterCount")
+    public ResponseEntity getDateAfterCountOfWorkingDays(@RequestParam(value = "count") Integer count) {
+        return ResponseEntity.ok(service.getDateAfterCountOfWorkingDays(count));
+    }
+
     @ExceptionHandler
     private ResponseEntity<NonWorkingDaysErrorResponse> handlerException(NonWorkingDaysException e) {
         NonWorkingDaysErrorResponse response = new NonWorkingDaysErrorResponse(
