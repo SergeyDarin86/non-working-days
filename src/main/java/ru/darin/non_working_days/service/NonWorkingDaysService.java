@@ -3,6 +3,7 @@ package ru.darin.non_working_days.service;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import ru.darin.non_working_days.util.DateResponse;
 import ru.darin.non_working_days.util.DaysResponse;
 import ru.darin.non_working_days.util.Months;
 import ru.darin.non_working_days.util.YearResponse;
@@ -23,6 +24,9 @@ public class NonWorkingDaysService {
 
     @Cacheable("non-working-days")
     public YearResponse getCommonResponseForYear(int year) {
+        System.out.println("++++++++++++++++++++++");
+        System.out.println("work service");
+        System.out.println("++++++++++++++++++++++");
         String url = "https://xmlcalendar.ru/data/ru/" + year + "/calendar.json";
         return restTemplate.getForObject(url, YearResponse.class);
     }
@@ -33,8 +37,7 @@ public class NonWorkingDaysService {
         ZonedDateTime dateFrom = getZonedDateTimeFromStringDate(strDateFrom);
         ZonedDateTime dateTo = getZonedDateTimeFromStringDate(strDateTo);
 
-        String url = "https://xmlcalendar.ru/data/ru/" + dateFrom.getYear() + "/calendar.json";
-        YearResponse response = restTemplate.getForObject(url, YearResponse.class);
+        YearResponse response = getCommonResponseForYear(dateFrom.getYear());
 
         for (Months month : response.getMonths()) {
             String[] splittedDays = month.getDays().split(",");
@@ -66,7 +69,12 @@ public class NonWorkingDaysService {
 
     //2-d task
     // узнать какое будет число по истечении указанного числа рабочих дней (сегодняшний день не учитывать)
-    public ZonedDateTime getDateAfterCountOfWorkingDays(Integer countOfWorkDays) {
+    //TODO: добавить проверку на вводимое значение:
+    // - только число (возможно сделать DTO)
+    // - не должно быть пустым полем
+    // - должно быть положительным
+    // - подумать, как возможно решить проблему, если у нас конец года
+    public DateResponse getDateAfterCountOfWorkingDays(Integer countOfWorkDays) {
         ZonedDateTime dateFrom = ZonedDateTime.now();
         ZonedDateTime dateAfterCount = dateFrom;
         dateAfterCount = dateAfterCount.plusDays(countOfWorkDays + 1);
@@ -74,13 +82,15 @@ public class NonWorkingDaysService {
         YearResponse response = getCommonResponseForYear(ZonedDateTime.now().getYear());
         int monthIndex = dateFrom.getMonthValue() - 1;
 
-        String[] splittedDays = response.getMonths().get(monthIndex).getDays().split(",");
-        for (String str : splittedDays) {
-            String strDay = str.replaceAll("[*]|[+]", "");
-            ZonedDateTime currentDate = getZonedDateTimeFromStringForSingleDayOfCalendar(strDay, response.getMonths().get(monthIndex).getMonth(), response.getYear());
-            boolean isBetweenDates = dateFrom.isBefore(currentDate) && dateAfterCount.isAfter(currentDate);
-            if (isBetweenDates && !str.contains("*")) dateAfterCount = dateAfterCount.plusDays(1);
+        for (int i = monthIndex; i < response.getMonths().size(); i++) {
+            String[] splittedDays = response.getMonths().get(i).getDays().split(",");
+            for (String str : splittedDays) {
+                String strDay = str.replaceAll("[*]|[+]", "");
+                ZonedDateTime currentDate = getZonedDateTimeFromStringForSingleDayOfCalendar(strDay, response.getMonths().get(i).getMonth(), response.getYear());
+                boolean isBetweenDates = dateFrom.isBefore(currentDate) && dateAfterCount.isAfter(currentDate);
+                if (isBetweenDates && !str.contains("*")) dateAfterCount = dateAfterCount.plusDays(1);
+            }
         }
-        return dateAfterCount;
+        return new DateResponse(dateAfterCount.withZoneSameInstant(ZoneId.of("Z")));
     }
 }
