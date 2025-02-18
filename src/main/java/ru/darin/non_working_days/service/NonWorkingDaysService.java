@@ -69,15 +69,10 @@ public class NonWorkingDaysService {
 
     //2-d task
     // узнать какое будет число по истечении указанного числа рабочих дней (сегодняшний день не учитывать)
-    //TODO: добавить проверку на вводимое значение:
-    // - только число (возможно сделать DTO)
-    // - не должно быть пустым полем +
-    // - должно быть положительным +
-    // - подумать, как возможно решить проблему, если у нас конец года
-    public DateResponse getDateAfterCountOfWorkingDays(Integer countOfWorkDays) {
+    public DateResponse getDateAfterCountOfWorkingDays(String countOfWorkDaysStr) {
         ZonedDateTime dateFrom = ZonedDateTime.now();
         ZonedDateTime dateAfterCount = dateFrom;
-        dateAfterCount = dateAfterCount.plusDays(countOfWorkDays + 1);
+        dateAfterCount = dateAfterCount.plusDays(Integer.parseInt(countOfWorkDaysStr) + 1);
 
         YearResponse response = getCommonResponseForYear(ZonedDateTime.now().getYear());
         int monthIndex = dateFrom.getMonthValue() - 1;

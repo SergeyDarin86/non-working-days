@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.darin.non_working_days.dto.CountSearchDTO;
 import ru.darin.non_working_days.dto.DateSearchDTO;
 import ru.darin.non_working_days.service.NonWorkingDaysService;
 import ru.darin.non_working_days.util.validation.DateDTOValidator;
@@ -35,8 +36,9 @@ public class Controller {
     }
 
     @GetMapping("/dateAfterCount")
-    public ResponseEntity getDateAfterCountOfWorkingDays(@RequestParam(value = "count") Integer count) {
-        return ResponseEntity.ok(service.getDateAfterCountOfWorkingDays(count));
+    public ResponseEntity getDateAfterCountOfWorkingDays(@RequestBody @Valid CountSearchDTO countSearchDTO, BindingResult bindingResult) {
+        ExceptionBuilder.buildErrorMessageForClient(bindingResult);
+        return ResponseEntity.ok(service.getDateAfterCountOfWorkingDays(countSearchDTO.getCount()));
     }
 
     @ExceptionHandler
