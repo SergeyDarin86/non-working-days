@@ -4,11 +4,15 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import ru.darin.non_working_days.dto.DateSearchDTO;
 
+import java.time.ZonedDateTime;
+
 public class ValidatorForSearchDTO implements ConstraintValidator<ValidSearchDTO, DateSearchDTO> {
 
     private static final String REGEX_VALUE = "^[0-9]{4}-[0-1][0-9]-[0-9]{2}T[0-2][0-9]:[0-5][0-9]:[0-5][0-9]Z$";
     private static final String MSG_NOT_EMPTY = "Поле не может быть пустым";
     private static final String MSG_WRONG_FORMAT = "Неверный формат ввода даты. Введите дату в формате: ГГГГ-ММ-ДДTчч:мм:ссZ (2022-12-03T23:12:28Z)";
+
+    private static final String MSG_WRONG_DATES_ORDER = "dateFrom должна быть до dateTo";
 
 
     @Override
@@ -40,6 +44,16 @@ public class ValidatorForSearchDTO implements ConstraintValidator<ValidSearchDTO
             context
                     .buildConstraintViolationWithTemplate(MSG_WRONG_FORMAT)
                     .addPropertyNode("dateTo")
+                    .addConstraintViolation();
+            isValid = false;
+//            if (ZonedDateTime.parse(dateDTO.getDateFrom()).isAfter(ZonedDateTime.parse(dateDTO.getDateTo())) || dateDTO.getDateFrom().equals(dateDTO.getDateTo())) {
+//                errors.rejectValue("dateFrom", "", " dateFrom должна быть до dateTo");
+//            }
+        } else if (ZonedDateTime.parse(dto.getDateFrom()).isAfter(ZonedDateTime.parse(dto.getDateTo())) || dto.getDateFrom().equals(dto.getDateTo())){
+            context.disableDefaultConstraintViolation();
+            context
+                    .buildConstraintViolationWithTemplate(MSG_WRONG_DATES_ORDER)
+                    .addPropertyNode("dateFrom")
                     .addConstraintViolation();
             isValid = false;
         }

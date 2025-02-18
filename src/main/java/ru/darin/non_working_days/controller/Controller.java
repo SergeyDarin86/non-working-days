@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.darin.non_working_days.dto.CountSearchDTO;
 import ru.darin.non_working_days.dto.DateSearchDTO;
 import ru.darin.non_working_days.service.NonWorkingDaysService;
-import ru.darin.non_working_days.util.validation.DateDTOValidator;
 import ru.darin.non_working_days.util.exception.ExceptionBuilder;
 import ru.darin.non_working_days.util.exception.NonWorkingDaysErrorResponse;
 import ru.darin.non_working_days.util.exception.NonWorkingDaysException;
@@ -16,11 +15,9 @@ import ru.darin.non_working_days.util.exception.NonWorkingDaysException;
 @RestController
 public class Controller {
     private final NonWorkingDaysService service;
-    private final DateDTOValidator dateDTOValidator;
 
-    public Controller(NonWorkingDaysService service, DateDTOValidator dateDTOValidator) {
+    public Controller(NonWorkingDaysService service) {
         this.service = service;
-        this.dateDTOValidator = dateDTOValidator;
     }
 
     @GetMapping("/showInfo")
@@ -30,7 +27,6 @@ public class Controller {
 
     @PostMapping("/countOfDays")
     public ResponseEntity getCountOfNonWorkingDaysBetweenDays(@RequestBody @Valid DateSearchDTO dateSearchDTO, BindingResult bindingResult) {
-        dateDTOValidator.validate(dateSearchDTO, bindingResult);
         ExceptionBuilder.buildErrorMessageForClient(bindingResult);
         return ResponseEntity.ok(service.getCountOfNonWorkingDaysPerPeriod(dateSearchDTO.getDateFrom(), dateSearchDTO.getDateTo()));
     }
