@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.darin.non_working_days.util.DateResponse;
 import ru.darin.non_working_days.util.DaysResponse;
-import ru.darin.non_working_days.util.Months;
 import ru.darin.non_working_days.util.YearResponse;
 
 import java.time.LocalDate;
@@ -19,8 +18,9 @@ import java.time.format.DateTimeFormatter;
 public class NonWorkingDaysService {
 
     //TODO:
+    // возможно добавить исключение для метода showInfo
     // кэш - правильно ли работает?
-    // логирование
+    // логирование +
     // тестирование
     // докер
     private final RestTemplate restTemplate;
