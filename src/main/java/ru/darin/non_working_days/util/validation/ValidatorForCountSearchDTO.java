@@ -2,8 +2,10 @@ package ru.darin.non_working_days.util.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import lombok.extern.slf4j.Slf4j;
 import ru.darin.non_working_days.dto.CountSearchDTO;
 
+@Slf4j
 public class ValidatorForCountSearchDTO implements ConstraintValidator<ValidSearchDTO, CountSearchDTO> {
     private static final String REGEX_VALUE = "^[0-9]{1,2}";
     private static final String MSG_NOT_EMPTY = "Значение поля не может быть пустым";
@@ -14,6 +16,7 @@ public class ValidatorForCountSearchDTO implements ConstraintValidator<ValidSear
 
     @Override
     public boolean isValid(CountSearchDTO dto, ConstraintValidatorContext context) {
+        log.info("Start method isValid(CountSearchDto) for ValidatorForCountSearchDTO, CountSearchDto is: {} ", dto);
         boolean isValid = true;
         if (dto.getCount().equals("")) {
             context.disableDefaultConstraintViolation();

@@ -1,6 +1,7 @@
 package ru.darin.non_working_days.controller;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -12,6 +13,7 @@ import ru.darin.non_working_days.util.exception.ExceptionBuilder;
 import ru.darin.non_working_days.util.exception.NonWorkingDaysErrorResponse;
 import ru.darin.non_working_days.util.exception.NonWorkingDaysException;
 
+@Slf4j
 @RestController
 public class Controller {
     private final NonWorkingDaysService service;
@@ -43,6 +45,7 @@ public class Controller {
                 e.getMessage(),
                 System.currentTimeMillis()
         );
+        log.error("Finish method handlerException() for Controller, statusCode is: {}, message is: {} ", HttpStatus.BAD_REQUEST, response.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 

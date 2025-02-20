@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: non-working-days
+
+logging:
+  level:
+    ru.ru.darin.coordinates: info
+    org:
+      springframework: ${LOG:info}
+  file:
+    name: logs/log

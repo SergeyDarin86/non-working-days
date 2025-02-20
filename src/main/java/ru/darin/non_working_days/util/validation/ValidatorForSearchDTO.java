@@ -2,10 +2,12 @@ package ru.darin.non_working_days.util.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import lombok.extern.slf4j.Slf4j;
 import ru.darin.non_working_days.dto.DateSearchDTO;
 
 import java.time.ZonedDateTime;
 
+@Slf4j
 public class ValidatorForSearchDTO implements ConstraintValidator<ValidSearchDTO, DateSearchDTO> {
 
     private static final String REGEX_VALUE = "^[0-9]{4}-[0-1][0-9]-[0-9]{2}T[0-2][0-9]:[0-5][0-9]:[0-5][0-9]Z$";
@@ -19,6 +21,7 @@ public class ValidatorForSearchDTO implements ConstraintValidator<ValidSearchDTO
 
     @Override
     public boolean isValid(DateSearchDTO dto, ConstraintValidatorContext context) {
+        log.info("Start method isValid(DateSearchDTO) for ValidatorForSearchDTO, DateSearchDTO is: {} ", dto);
         boolean isValid = true;
         if (dto.getDateFrom() == null || dto.getDateFrom().isEmpty()) {
             context.disableDefaultConstraintViolation();
