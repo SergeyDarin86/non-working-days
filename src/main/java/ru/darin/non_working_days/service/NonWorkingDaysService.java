@@ -1,5 +1,6 @@
 package ru.darin.non_working_days.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -13,9 +14,15 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
+@Slf4j
 @Service
 public class NonWorkingDaysService {
 
+    //TODO:
+    // кэш - правильно ли работает?
+    // логирование
+    // тестирование
+    // докер
     private final RestTemplate restTemplate;
 
     public NonWorkingDaysService(RestTemplate restTemplate) {
@@ -24,14 +31,10 @@ public class NonWorkingDaysService {
 
     @Cacheable("non-working-days")
     public YearResponse getCommonResponseForYear(int year) {
-        System.out.println("++++++++++++++++++++++");
-        System.out.println("work service");
-        System.out.println("++++++++++++++++++++++");
         String url = "https://xmlcalendar.ru/data/ru/" + year + "/calendar.json";
         return restTemplate.getForObject(url, YearResponse.class);
     }
 
-    //1-st task
     public DaysResponse getCountOfNonWorkingDaysPerPeriod(String strDateFrom, String strDateTo) {
         Byte countOfDaysBetweenDates = 0;
         ZonedDateTime dateFrom = getZonedDateTimeFromStringDate(strDateFrom);
@@ -67,8 +70,6 @@ public class NonWorkingDaysService {
         return date.atStartOfDay(ZoneId.of("Z"));
     }
 
-    //2-d task
-    // узнать какое будет число по истечении указанного числа рабочих дней (сегодняшний день не учитывать)
     public DateResponse getDateAfterCountOfWorkingDays(String countOfWorkDaysStr) {
         ZonedDateTime dateFrom = ZonedDateTime.now();
         ZonedDateTime dateAfterCount = dateFrom;
