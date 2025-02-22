@@ -1,6 +1,7 @@
 package ru.darin.non_working_days;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import ru.darin.non_working_days.dto.DateSearchDTO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -67,7 +70,8 @@ class NonWorkingDaysApplicationTests {
                 .perform(get("/showInfo")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .param("year", "2025"))
-                .andExpect(status().is2xxSuccessful());
+                .andExpect(status().is2xxSuccessful())
+                .andDo(print()).andExpect(jsonPath("months", Matchers.hasSize(12)));
     }
 
     @Test
