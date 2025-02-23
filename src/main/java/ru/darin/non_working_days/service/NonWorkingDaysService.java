@@ -58,12 +58,12 @@ public class NonWorkingDaysService {
         return new DaysResponse(countOfDaysBetweenDates);
     }
 
-    public static ZonedDateTime getZonedDateTimeFromStringDate(String strDate) {
+    public ZonedDateTime getZonedDateTimeFromStringDate(String strDate) {
         log.info("Start method getZonedDateTimeFromStringDate(strDate) for NonWorkingDaysService, strDate is: {} ", strDate);
         return ZonedDateTime.parse(strDate);
     }
 
-    public static ZonedDateTime getZonedDateTimeFromStringForSingleDayOfCalendar(String day, String month, String year) {
+    public ZonedDateTime getZonedDateTimeFromStringForSingleDayOfCalendar(String day, String month, String year) {
         log.info("Start method getZonedDateTimeFromStringForSingleDayOfCalendar(day, month, year) for NonWorkingDaysService, day is: {}, month is: {}, year is: {} ", day, month, year);
         if (day.length() == 1 || (day.length() == 2 && (day.endsWith("+") || day.endsWith("*"))))
             day = "0".concat(day);
