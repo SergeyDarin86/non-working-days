@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.client.RestTemplate;
+import ru.darin.non_working_days.util.DateResponse;
 import ru.darin.non_working_days.util.DaysResponse;
 import ru.darin.non_working_days.util.Months;
 import ru.darin.non_working_days.util.YearResponse;
@@ -81,5 +82,20 @@ class NonWorkingDaysServiceTest {
 
     @Test
     void getDateAfterCountOfWorkingDays() {
+        YearResponse response = Mockito.mock(YearResponse.class);
+        List<Months> monthsList = new ArrayList<>();
+        Months month = new Months();
+        month.setMonth("1");
+        monthsList.add(month);
+        month.setDays("1,2,3");
+        response.setMonths(monthsList);
+
+        when(service.getCommonResponseForYear(2025)).thenReturn(response);
+        when(response.getMonths()).thenReturn(monthsList);
+        when(response.getYear()).thenReturn("2025");
+
+        service.getDateAfterCountOfWorkingDays("1");
+
+        Assertions.assertEquals("2025", response.getYear());
     }
 }
