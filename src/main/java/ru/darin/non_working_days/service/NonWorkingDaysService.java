@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.darin.non_working_days.util.DateResponse;
 import ru.darin.non_working_days.util.DaysResponse;
+import ru.darin.non_working_days.util.Months;
 import ru.darin.non_working_days.util.YearResponse;
 
 import java.time.LocalDate;
@@ -44,17 +45,15 @@ public class NonWorkingDaysService {
 
         YearResponse response = getCommonResponseForYear(dateFrom.getYear());
 
-        for (int i = dateFrom.getMonthValue() - 1; i < dateTo.getMonthValue(); i++) {
-            String[] splittedDays = response.getMonths().get(i).getDays().split(",");
+        for (Months month : response.getMonths()) {
+            String[] splittedDays = month.getDays().split(",");
             for (String str : splittedDays) {
                 String strDay = str.replaceAll("[*]|[+]", "");
-                ZonedDateTime currentDate = getZonedDateTimeFromStringForSingleDayOfCalendar(strDay, response.getMonths().get(i).getMonth(), response.getYear());
+                ZonedDateTime currentDate = getZonedDateTimeFromStringForSingleDayOfCalendar(strDay, month.getMonth(), response.getYear());
                 boolean isBetweenDates = dateFrom.isBefore(currentDate) && dateTo.isAfter(currentDate);
                 if (isBetweenDates && str.matches("\\d{1,2}[^*]?")) countOfDaysBetweenDates++;
-                if (currentDate.getDayOfMonth() == dateTo.getDayOfMonth())break;
             }
         }
-        log.info("Finish method getCountOfNonWorkingDaysPerPeriod(strDateFrom, strDateTo) for NonWorkingDaysService, countOfDaysBetweenDates is: {} ", countOfDaysBetweenDates);
         return new DaysResponse(countOfDaysBetweenDates);
     }
 
