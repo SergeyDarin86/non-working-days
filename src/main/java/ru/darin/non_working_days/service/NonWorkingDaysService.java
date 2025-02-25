@@ -31,7 +31,7 @@ public class NonWorkingDaysService {
     }
 
     @Cacheable("non-working-days")
-    public YearResponse getCommonResponseForYear(int year) {
+    public YearResponse getCommonResponseForYear(Integer year) {
         log.info("Start method getCommonResponseForYear(year) for NonWorkingDaysService, year is: {} ", year);
         String url = "https://xmlcalendar.ru/data/ru/" + year + "/calendar.json";
         return restTemplate.getForObject(url, YearResponse.class);

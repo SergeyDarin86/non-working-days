@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: non-working-days-app
+    build:
+      context: .
+    networks:
+      - non-working-days
+    ports:
+      - 8080:8080
+    stdin_open: true
+    tty: true
+
+volumes:
+  db:
+    driver: local
+
+networks:
+  non-working-days:
+    name: non-working-days-network
+    driver: bridge

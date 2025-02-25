@@ -7,7 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.client.RestTemplate;
-import ru.darin.non_working_days.util.DateResponse;
 import ru.darin.non_working_days.util.DaysResponse;
 import ru.darin.non_working_days.util.Months;
 import ru.darin.non_working_days.util.YearResponse;
