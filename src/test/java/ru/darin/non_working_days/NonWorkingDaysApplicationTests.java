@@ -86,7 +86,7 @@ class NonWorkingDaysApplicationTests {
     @Test
     void getDateAfterCountOfWorkingDays() throws Exception {
         this.mockMvc
-                .perform(get("/dateAfterCount")
+                .perform(post("/dateAfterCount")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(mapper.writeValueAsString(countSearchDTO)))
                 .andExpect(status().is2xxSuccessful());

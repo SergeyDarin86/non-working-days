@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.darin.non_working_days.dto.CountSearchDTO;
 import ru.darin.non_working_days.dto.DateSearchDTO;
+import ru.darin.non_working_days.resource.NonWorkingDaysResource;
 import ru.darin.non_working_days.service.NonWorkingDaysService;
 import ru.darin.non_working_days.util.exception.ExceptionBuilder;
 import ru.darin.non_working_days.util.exception.NonWorkingDaysErrorResponse;
@@ -15,7 +16,7 @@ import ru.darin.non_working_days.util.exception.NonWorkingDaysException;
 
 @Slf4j
 @RestController
-public class Controller {
+public class Controller implements NonWorkingDaysResource {
     private final NonWorkingDaysService service;
 
     public Controller(NonWorkingDaysService service) {
@@ -33,7 +34,7 @@ public class Controller {
         return ResponseEntity.ok(service.getCountOfNonWorkingDaysPerPeriod(dateSearchDTO.getDateFrom(), dateSearchDTO.getDateTo()));
     }
 
-    @GetMapping("/dateAfterCount")
+    @PostMapping("/dateAfterCount")
     public ResponseEntity getDateAfterCountOfWorkingDays(@RequestBody @Valid CountSearchDTO countSearchDTO, BindingResult bindingResult) {
         ExceptionBuilder.buildErrorMessageForClient(bindingResult);
         return ResponseEntity.ok(service.getDateAfterCountOfWorkingDays(countSearchDTO.getCount()));

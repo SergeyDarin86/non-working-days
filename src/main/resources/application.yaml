@@ -9,3 +9,7 @@ logging:
       springframework: ${LOG:info}
   file:
     name: logs/log
+
+non-working-days:
+  openapi:
+    dev-url: http://localhost:8080

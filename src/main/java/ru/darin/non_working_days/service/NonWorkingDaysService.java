@@ -22,8 +22,10 @@ public class NonWorkingDaysService {
     // возможно добавить исключение для метода showInfo
     // кэш - правильно ли работает?
     // логирование +
-    // тестирование
-    // докер
+    // тестирование +
+    // докер +
+    // документация
+    // readme.md
     private final RestTemplate restTemplate;
 
     public NonWorkingDaysService(RestTemplate restTemplate) {
