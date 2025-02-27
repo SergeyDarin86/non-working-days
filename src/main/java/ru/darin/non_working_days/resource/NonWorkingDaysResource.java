@@ -36,6 +36,12 @@ public interface NonWorkingDaysResource {
                                     array = @ArraySchema(schema = @Schema(implementation = YearResponse.class))
                             )
                     }
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Bad Request",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = NonWorkingDaysErrorResponse.class))
             )
     })
     ResponseEntity getCommonInfoAboutYear(@RequestBody @Valid YearDTO yearDTO, BindingResult bindingResult);

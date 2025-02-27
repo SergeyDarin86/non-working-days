@@ -35,6 +35,16 @@
           "required": true
         },
         "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NonWorkingDaysErrorResponse"
+                }
+              }
+            }
+          },
           "200": {
             "description": "Метод успешно выполнен",
             "content": {
@@ -70,6 +80,16 @@
           "required": true
         },
         "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NonWorkingDaysErrorResponse"
+                }
+              }
+            }
+          },
           "200": {
             "description": "Метод успешно выполнен",
             "content": {
@@ -79,16 +99,6 @@
                   "items": {
                     "$ref": "#/components/schemas/DateResponse"
                   }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NonWorkingDaysErrorResponse"
                 }
               }
             }
@@ -115,6 +125,16 @@
           "required": true
         },
         "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NonWorkingDaysErrorResponse"
+                }
+              }
+            }
+          },
           "200": {
             "description": "Метод успешно выполнен",
             "content": {
@@ -124,16 +144,6 @@
                   "items": {
                     "$ref": "#/components/schemas/DaysResponse"
                   }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NonWorkingDaysErrorResponse"
                 }
               }
             }
@@ -154,6 +164,23 @@
           }
         },
         "description": "Класс для поиска данных по выходным дням за определенный год"
+      },
+      "NonWorkingDaysErrorResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Текст сообщения об ошибке",
+            "example": "Поле не может быть пустым"
+          },
+          "timestamp": {
+            "type": "integer",
+            "description": "Временная метка (timestamp)",
+            "format": "int64",
+            "example": 1729178966070
+          }
+        },
+        "description": "Класс, возвращающий текст ошибки пользователю в случае некорректно введенных данных."
       },
       "Months": {
         "type": "object",
@@ -211,23 +238,6 @@
           }
         },
         "description": "Класс для вывода даты."
-      },
-      "NonWorkingDaysErrorResponse": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "description": "Текст сообщения об ошибке",
-            "example": "Поле не может быть пустым"
-          },
-          "timestamp": {
-            "type": "integer",
-            "description": "Временная метка (timestamp)",
-            "format": "int64",
-            "example": 1729178966070
-          }
-        },
-        "description": "Класс, возвращающий текст ошибки пользователю в случае некорректно введенных данных."
       },
       "DateSearchDTO": {
         "type": "object",
