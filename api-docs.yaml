@@ -1,0 +1,262 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Руководство использования сервиса API",
+    "description": "Сервис предназначен для: \n- вычисления количества выходных дней за указанный период \n- возвращения даты, которая наступит по истечении такого числа рабочих дней,\n которое было передано в качестве параметра.",
+    "contact": {
+      "name": "Sergey Darin",
+      "email": "swd86@mail.ru"
+    },
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Server URL in Development environment"
+    }
+  ],
+  "paths": {
+    "/showInfo": {
+      "post": {
+        "tags": [
+          "API сервиса определения количества нерабочих дней"
+        ],
+        "summary": "Получение данных за год.",
+        "description": "Данный метод предназначен для получения данных по всем выходным дням за год.\nНеобходимо ввести интересующий нас год.",
+        "operationId": "getCommonInfoAboutYear",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/YearDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Метод успешно выполнен",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/YearResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dateAfterCount": {
+      "post": {
+        "tags": [
+          "API сервиса определения количества нерабочих дней"
+        ],
+        "summary": "Расчет даты.",
+        "description": "Данный метод предназначен для вычисления даты, которая наступит по истечении такого числа рабочих дней, которое было передано в качестве параметра.\nНеобходимо ввести количество дней.",
+        "operationId": "getDateAfterCountOfWorkingDays",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CountSearchDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Метод успешно выполнен",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DateResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NonWorkingDaysErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/countOfDays": {
+      "post": {
+        "tags": [
+          "API сервиса определения количества нерабочих дней"
+        ],
+        "summary": "Вычисление количества нерабочих дней.",
+        "description": "Данный метод предназначен для вычисления количества выходных дней за указанный период.\nНеобходимо ввести диапазон дат.",
+        "operationId": "getCountOfNonWorkingDaysBetweenDays",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DateSearchDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Метод успешно выполнен",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DaysResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NonWorkingDaysErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "YearDTO": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "string",
+            "description": "Год",
+            "example": "2025"
+          }
+        },
+        "description": "Класс для поиска данных по выходным дням за определенный год"
+      },
+      "Months": {
+        "type": "object",
+        "properties": {
+          "month": {
+            "type": "string",
+            "description": "Номер месяца",
+            "example": "1"
+          },
+          "days": {
+            "type": "string",
+            "description": "Выходные дни для этого месяца",
+            "example": "1,2,3,4,5,6,7,8,11,12,18,19,25,26"
+          }
+        },
+        "description": "Класс, возвращающий номер месяца и выходные дни для него."
+      },
+      "YearResponse": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "string",
+            "description": "Год",
+            "example": "2025"
+          },
+          "months": {
+            "type": "array",
+            "description": "Месяца",
+            "items": {
+              "$ref": "#/components/schemas/Months"
+            }
+          }
+        },
+        "description": "Класс, возвращающий данные по выходным дням за выбранный год."
+      },
+      "CountSearchDTO": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "string",
+            "description": "Количество рабочих дней",
+            "example": "3"
+          }
+        },
+        "description": "Класс для передачи количества рабочих дней"
+      },
+      "DateResponse": {
+        "type": "object",
+        "properties": {
+          "dateAfterCountOfWorkingDays": {
+            "type": "string",
+            "description": "Дата (рабочий день), которая наступит после указанного количества рабочих дней",
+            "format": "date-time",
+            "example": "2025-04-26T18:56:06.898Z"
+          }
+        },
+        "description": "Класс для вывода даты."
+      },
+      "NonWorkingDaysErrorResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Текст сообщения об ошибке",
+            "example": "Поле не может быть пустым"
+          },
+          "timestamp": {
+            "type": "integer",
+            "description": "Временная метка (timestamp)",
+            "format": "int64",
+            "example": 1729178966070
+          }
+        },
+        "description": "Класс, возвращающий текст ошибки пользователю в случае некорректно введенных данных."
+      },
+      "DateSearchDTO": {
+        "type": "object",
+        "properties": {
+          "dateFrom": {
+            "type": "string",
+            "description": "Нижняя граница диапазона (от)",
+            "example": "2025-02-06T18:56:06.898Z"
+          },
+          "dateTo": {
+            "type": "string",
+            "description": "Верхняя граница диапазона (до)",
+            "example": "2025-02-23T18:56:06.898Z"
+          }
+        },
+        "description": "Класс для поиска по диапазону дат."
+      },
+      "DaysResponse": {
+        "type": "object",
+        "properties": {
+          "countOfDays": {
+            "type": "string",
+            "description": "Количество выходных дней",
+            "format": "byte",
+            "example": "12"
+          }
+        },
+        "description": "Класс для вывода количества выходных дней, которые находятся в диапазоне дат"
+      }
+    }
+  }
+}
