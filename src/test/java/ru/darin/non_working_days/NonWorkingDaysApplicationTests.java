@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.darin.non_working_days.controller.Controller;
 import ru.darin.non_working_days.dto.CountSearchDTO;
 import ru.darin.non_working_days.dto.DateSearchDTO;
+import ru.darin.non_working_days.dto.YearDTO;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -39,6 +40,8 @@ class NonWorkingDaysApplicationTests {
 
     private DateSearchDTO dateSearchDTO;
 
+    private YearDTO yearDTO;
+
     private DateSearchDTO dateSearchDTOWithWrongFormat;
 
     @Test
@@ -48,6 +51,8 @@ class NonWorkingDaysApplicationTests {
 
     @BeforeEach
     void setUp() {
+        yearDTO = new YearDTO();
+        yearDTO.setYear("2025");
         countSearchDTO = new CountSearchDTO();
         countSearchDTO.setCount("1");
         dateSearchDTO = new DateSearchDTO();
@@ -67,9 +72,9 @@ class NonWorkingDaysApplicationTests {
     @Test
     void getCommonInfoAboutYear() throws Exception {
         this.mockMvc
-                .perform(get("/showInfo")
+                .perform(post("/showInfo")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .param("year", "2025"))
+                        .content(mapper.writeValueAsString(yearDTO)))
                 .andExpect(status().is2xxSuccessful())
                 .andDo(print()).andExpect(jsonPath("months", Matchers.hasSize(12)));
     }

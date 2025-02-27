@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = {ValidatorForSearchDTO.class, ValidatorForCountSearchDTO.class})
+@Constraint(validatedBy = {ValidatorForSearchDTO.class, ValidatorForCountSearchDTO.class, ValidatorForYearDTO.class})
 public @interface ValidSearchDTO {
     String message() default "Ошибка валидации";
 

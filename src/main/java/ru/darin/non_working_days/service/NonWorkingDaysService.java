@@ -33,7 +33,7 @@ public class NonWorkingDaysService {
     }
 
     @Cacheable("non-working-days")
-    public YearResponse getCommonResponseForYear(Integer year) {
+    public YearResponse getCommonResponseForYear(String year) {
         log.info("Start method getCommonResponseForYear(year) for NonWorkingDaysService, year is: {} ", year);
         String url = "https://xmlcalendar.ru/data/ru/" + year + "/calendar.json";
         return restTemplate.getForObject(url, YearResponse.class);
@@ -45,7 +45,7 @@ public class NonWorkingDaysService {
         ZonedDateTime dateFrom = getZonedDateTimeFromStringDate(strDateFrom);
         ZonedDateTime dateTo = getZonedDateTimeFromStringDate(strDateTo);
 
-        YearResponse response = getCommonResponseForYear(dateFrom.getYear());
+        YearResponse response = getCommonResponseForYear(String.valueOf(dateFrom.getYear()));
 
         for (Months month : response.getMonths()) {
             String[] splittedDays = month.getDays().split(",");
@@ -84,7 +84,7 @@ public class NonWorkingDaysService {
         ZonedDateTime dateAfterCount = dateFrom;
         dateAfterCount = dateAfterCount.plusDays(Integer.parseInt(countOfWorkDaysStr) + 1);
 
-        YearResponse response = getCommonResponseForYear(ZonedDateTime.now().getYear());
+        YearResponse response = getCommonResponseForYear(String.valueOf(ZonedDateTime.now().getYear()));
         int monthIndex = dateFrom.getMonthValue() - 1;
 
         for (int i = monthIndex; i < response.getMonths().size(); i++) {

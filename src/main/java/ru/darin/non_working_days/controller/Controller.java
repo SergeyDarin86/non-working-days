@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.darin.non_working_days.dto.CountSearchDTO;
 import ru.darin.non_working_days.dto.DateSearchDTO;
+import ru.darin.non_working_days.dto.YearDTO;
 import ru.darin.non_working_days.resource.NonWorkingDaysResource;
 import ru.darin.non_working_days.service.NonWorkingDaysService;
 import ru.darin.non_working_days.util.exception.ExceptionBuilder;
@@ -23,9 +24,10 @@ public class Controller implements NonWorkingDaysResource {
         this.service = service;
     }
 
-    @GetMapping("/showInfo")
-    public ResponseEntity getCommonInfoAboutYear(@RequestParam(value = "year") Integer year) {
-        return ResponseEntity.ok(service.getCommonResponseForYear(year));
+    @PostMapping("/showInfo")
+    public ResponseEntity getCommonInfoAboutYear(@RequestBody @Valid YearDTO yearDTO, BindingResult bindingResult) {
+        ExceptionBuilder.buildErrorMessageForClient(bindingResult);
+        return ResponseEntity.ok(service.getCommonResponseForYear(yearDTO.getYear()));
     }
 
     @PostMapping("/countOfDays")

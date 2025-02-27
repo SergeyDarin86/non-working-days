@@ -38,7 +38,7 @@ class NonWorkingDaysServiceTest {
 
     @Test
     void getCommonResponseForYear() {
-        service.getCommonResponseForYear(2003);
+        service.getCommonResponseForYear("2003");
         when(restTemplate.getForObject(anyString(), Mockito.eq(YearResponse.class))).thenReturn(yearResponse);
     }
 
@@ -55,7 +55,7 @@ class NonWorkingDaysServiceTest {
         month.setDays("1,2,3");
         response.setMonths(monthsList);
 
-        when(service.getCommonResponseForYear(2025)).thenReturn(response);
+        when(service.getCommonResponseForYear("2025")).thenReturn(response);
         when(response.getMonths()).thenReturn(monthsList);
         when(response.getYear()).thenReturn("2025");
 
@@ -89,7 +89,7 @@ class NonWorkingDaysServiceTest {
         month.setDays("1,2,3");
         response.setMonths(monthsList);
 
-        when(service.getCommonResponseForYear(2025)).thenReturn(response);
+        when(service.getCommonResponseForYear("2025")).thenReturn(response);
         when(response.getMonths()).thenReturn(monthsList);
         when(response.getYear()).thenReturn("2025");
 

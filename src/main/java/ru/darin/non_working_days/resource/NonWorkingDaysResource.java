@@ -11,9 +11,9 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import ru.darin.non_working_days.dto.CountSearchDTO;
 import ru.darin.non_working_days.dto.DateSearchDTO;
+import ru.darin.non_working_days.dto.YearDTO;
 import ru.darin.non_working_days.util.DateResponse;
 import ru.darin.non_working_days.util.DaysResponse;
 import ru.darin.non_working_days.util.YearResponse;
@@ -38,7 +38,7 @@ public interface NonWorkingDaysResource {
                     }
             )
     })
-    ResponseEntity getCommonInfoAboutYear(@RequestParam(value = "year") Integer year);
+    ResponseEntity getCommonInfoAboutYear(@RequestBody @Valid YearDTO yearDTO, BindingResult bindingResult);
 
     @Operation(
             summary = "Расчет даты.",
