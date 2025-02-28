@@ -109,11 +109,30 @@
   <img src="img/wrong_dates_order_length.png" alt="drawing" width="700"/>
 </h2>
 
+10. Для получения даты, которая наступит по истечении такого числа рабочих дней, переданного в качестве параметра, в строке ендпоинта нашего API вводим адрес: <b>http://localhost:8080/dateAfterCount</b>.
+ Формат ввода данных аналогичен работе с предыдущим пунктом (получение данных за календарный год). 
+Ключом является параметр <b>"count"</b> - количество рабочих дней.
 
+<h2 align="center">
+  <img src="img/dateAfterCount_request.png" alt="drawing" width="700"/>
+</h2>
 
+После успешной отправки запроса мы получим ответ также в формате <b>"ключ - значение"</b>,
+где будет указана дата (рабочий день). (Смотри рисунок ниже).
 
+<h2 align="center">
+  <img src="img/dateAfterCount_response.png" alt="drawing" width="700"/>
+</h2>
 
+В случае некорректного ввода данных предусмотрены ошибки:
+- неверный формат:
 
+<h2 align="center">
+  <img src="img/wrong_count_format.png" alt="drawing" width="700"/>
+</h2>
 
+- пустое поле:
 
-
+<h2 align="center">
+  <img src="img/empty_count.png" alt="drawing" width="700"/>
+</h2>
