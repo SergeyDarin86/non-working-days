@@ -18,6 +18,8 @@ public class ValidatorForSearchDTO implements ConstraintValidator<ValidSearchDTO
 
     private static final String MSG_WRONG_DATES_ORDER = "dateFrom должна быть до dateTo";
 
+    private static final String MSG_WRONG_YEAR = "Данные предоставляются только c 2013 года и до текущего года включительно";
+
 
     @Override
     public boolean isValid(DateSearchDTO dto, ConstraintValidatorContext context) {
@@ -55,6 +57,13 @@ public class ValidatorForSearchDTO implements ConstraintValidator<ValidSearchDTO
             context.disableDefaultConstraintViolation();
             context
                     .buildConstraintViolationWithTemplate(MSG_WRONG_DATES_ORDER)
+                    .addPropertyNode("dateFrom")
+                    .addConstraintViolation();
+            isValid = false;
+        } else if (ZonedDateTime.parse(dto.getDateFrom()).getYear() > ZonedDateTime.now().getYear() || ZonedDateTime.parse(dto.getDateFrom()).getYear() < 2013){
+            context.disableDefaultConstraintViolation();
+            context
+                    .buildConstraintViolationWithTemplate(MSG_WRONG_YEAR)
                     .addPropertyNode("dateFrom")
                     .addConstraintViolation();
             isValid = false;
