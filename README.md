@@ -136,3 +136,9 @@
 <h2 align="center">
   <img src="img/empty_count.png" alt="drawing" width="700"/>
 </h2>
+
+- значение поля равно нулю:
+
+<h2 align="center">
+  <img src="img/count_equals_zero.png" alt="drawing" width="700"/>
+</h2>
