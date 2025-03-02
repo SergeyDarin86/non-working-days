@@ -51,5 +51,4 @@ public class Controller implements NonWorkingDaysResource {
         log.error("Finish method handlerException() for Controller, statusCode is: {}, message is: {} ", HttpStatus.BAD_REQUEST, response.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
-
 }

@@ -17,18 +17,6 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 @Service
 public class NonWorkingDaysService {
-
-    //TODO:
-    // возможно добавить исключение для метода showInfo +
-    // -
-    // ВОЗМОЖНО ДОБАВИТЬ ОГРАНИЧЕНИЯ ПО ГОДУ С 2013 ПО 2025 В ДРУГИЕ МЕТОДЫ - ИНАЧЕ ОШИБКА 500
-    // -
-    // кэш - правильно ли работает?
-    // логирование +
-    // тестирование +
-    // докер +
-    // документация
-    // readme.md
     private final RestTemplate restTemplate;
 
     public NonWorkingDaysService(RestTemplate restTemplate) {
